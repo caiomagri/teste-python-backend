@@ -13,7 +13,7 @@ Você deve realizar um fork deste repositório e, ao finalizar, enviar o link do
 - Bancos relacionais permitidos:
       - MySQL
       - MariaDB
-      - Postgre
+      - Postgres
 - Bancos não relacionais permitidos:
       - MongoDB
 - Sua API deverá seguir os padrões Rest na construção das rotas e retornos
