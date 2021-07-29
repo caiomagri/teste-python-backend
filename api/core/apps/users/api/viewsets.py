@@ -33,10 +33,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if password:
             if not old_password:
-                return Response({"message": "Para alterar sua senha informe sua senha atual."},
+                return Response({"erro": "Para alterar sua senha informe sua senha atual."},
                                 status=status.HTTP_400_BAD_REQUEST)
             elif not instance.check_password(old_password):
-                return Response({"message": "Sua senha atual não é válida."},
+                return Response({"erro": "Sua senha atual não é válida."},
                                 status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.serializer_class(instance, data=request.data, partial=True)
