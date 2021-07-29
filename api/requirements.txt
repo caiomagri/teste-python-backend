@@ -1,0 +1,7 @@
+Django==3.2.5
+djangorestframework
+djangorestframework-simplejwt
+psycopg2
+beautifulsoup4
+requests
+lxml

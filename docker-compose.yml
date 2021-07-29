@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+  db:
+    container_name: teste_python_backend_db
+    image: postgres:10.1-alpine
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  api:
+    container_name: teste_python_backend_api
+    restart: always
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/code
+    env_file: .env
+    environment:
+      DEBUG: 'true'
+    command: python ./api/manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+volumes:
+  postgres_data:
