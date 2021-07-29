@@ -1,8 +1,8 @@
-import json
 import logging
 
-from django.http import HttpResponse
+from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .scraper import get_lottery_result
 
@@ -11,10 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class LotteryResultView(APIView):
+    
     def get(self, request, *args, **kwargs):
         result = get_lottery_result()
-
-        return HttpResponse(
-            json.dumps({"result": result}),
-            status=200,
-            content_type="application/json")
+        return Response({"result": result}, status=status.HTTP_200_OK)

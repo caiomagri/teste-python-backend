@@ -2,8 +2,10 @@ import logging
 
 from django.contrib.auth import get_user_model
 
+from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 from .serializers import UserSerializer
 
@@ -20,3 +22,24 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.action in ['create']:
             return [AllowAny()]
         return super(UserViewSet, self).get_permissions()
+
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        password = request.data.get('password')
+        old_password = request.data.get('old_password')
+
+        if password:
+            if not old_password:
+                return Response({"message": "Para alterar sua senha informe sua senha atual."},
+                                status=status.HTTP_400_BAD_REQUEST)
+            elif not instance.check_password(old_password):
+                return Response({"message": "Sua senha atual não é válida."},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.serializer_class(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
