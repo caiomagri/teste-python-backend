@@ -13,7 +13,17 @@ logger = logging.getLogger(__name__)
 
 class LotteryResultView(APIView):
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs) -> Response:
+        """
+        Rota para pegar o resultado da mega sena.
+
+        @get_lottery_result() : realiza o webscrapping para retornar os dados do resultado.
+
+        :return: {
+            "result": list[ int ]
+        }
+        """
+
         try:
             result = get_lottery_result()
             return Response({"result": result}, status=status.HTTP_200_OK)
@@ -25,12 +35,41 @@ class LotteryResultView(APIView):
 
 class BetView(APIView):
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs) -> Response:
+        """
+        Rota para listar as últimas apostas de um usuário.
+
+        :return: [
+              {
+                "id": int (id do registro da bet),
+                "user": int (id do usuários),
+                "numbers": [int] (números da aposta),
+                "created_at": str (data de criação do registro)
+              }
+        ]
+        """
+
         bets = request.user.bets
         serializer = BetSerializer(bets, many=True)
         return Response(serializer.data)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> Response:
+        """
+        Rota para realizar uma nova aposta.
+        Recebe o valor de "dozens" para sortear as dezenas da aposta
+
+        :payload: {
+            "dozens" int (Número de dezenas que serão sorteadas)
+        }
+
+        :return: {
+            "id": int (id do registro da bet),
+            "user": int (id do usuários),
+            "numbers": [int] (números da aposta),
+            "created_at": str (data de criação do registro)
+        }
+        """
+
         payload = request.data.copy()
 
         try:
@@ -61,7 +100,16 @@ class BetView(APIView):
 
 
 class BetResultView(APIView):
-    def get(self, request, *args, **kwargs):
+
+    def get(self, request, *args, **kwargs) -> Response:
+        """
+        Rota para consultar quantos acertos a última aposta do usuário teve.
+
+        :return: {
+              "result": list[ int ]
+            }
+        """
+
         try:
 
             bet = request.user.bets.all().first()
@@ -87,6 +135,6 @@ class BetResultView(APIView):
 
             return Response(response)
         except Exception as ex:
-            logger.error(f"Get Lottery las Result - {str(ex)}")
+            logger.error(f"Get Lottery last Result - {str(ex)}")
             return Response({"error": "We had a problem making the request. Try again."},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -9,7 +9,13 @@ logger = logging.getLogger(__name__)
 TIMEOUT = 20
 
 
-def get_result_from_google_search():
+def get_result_from_google_search() -> list:
+    """
+    Função para realizar o Webscrapping no Google, formatar os dados em uma lista de inteiros e
+    retornar.
+
+    :return: [ int ]
+    """
     result_list = []
 
     try:
@@ -30,7 +36,7 @@ def get_result_from_google_search():
 
         if data:
             result_list = [int(span.text) for span in data]
-        logger.warning(f"Resultado do webscrapping Google - {result_list}")
+        logger.warning(f"Webscrapping Google Result - {result_list}")
 
     except Exception as ex:
         logger.error(f"ERROR Webscraping Google - {str(ex)}")
@@ -38,11 +44,20 @@ def get_result_from_google_search():
     return result_list
 
 
-def get_result_from_cef():
+def get_result_from_cef() -> list:
+    """
+    Função para realizar o Webscrapping na Caixa Econômica Federal, formatar os dados em uma lista de inteiros e
+    retornar.
+
+    :return: [ int ]
+    """
+
     result_list = []
 
     try:
-        html = requests.get("http://www.loterias.caixa.gov.br/wps/portal/loterias", timeout=TIMEOUT).content
+        url = "http://www.loterias.caixa.gov.br/wps/portal/loterias"
+
+        html = requests.get(url, timeout=TIMEOUT).content
         soup = BeautifulSoup(html, 'html.parser')
 
         data = soup.find("ul", attrs={"class": "resultado-loteria mega-sena"})
@@ -50,15 +65,22 @@ def get_result_from_cef():
         if data:
             result_list = [int(li.text) for li in data.findAll("li")]
 
-        logger.warning(f"Resultado do webscrapping Caixa Economica Federal - {result_list}")
+        logger.warning(f"Webscrapping CEF Result - {result_list}")
     except Exception as ex:
         logger.error(f"ERROR Webscraping CEF - {str(ex)}")
 
     return result_list
 
 
-def get_lottery_result():
+def get_lottery_result() -> list:
+    """
+    Função core para realizar a consulta dos resultado da mega sena, tentando fazer o webscrapping no Google ou na
+    Caixa Econômica Federal.
+
+    :return: [ int ]
+    """
+
     response = get_result_from_google_search() or get_result_from_cef()
     if not response:
-        raise Exception("Não foi possível realizar o webscraping do resultado da mega sena")
+        raise Exception("It was not possible to get the result of the mega sena")
     return response

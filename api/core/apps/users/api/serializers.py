@@ -24,6 +24,9 @@ class UserSerializer(serializers.ModelSerializer):
         if "password" in validated_data:
             password = validated_data.pop('password')
 
+        if "username" in validated_data:
+            validated_data.pop("username")
+
         res = super(UserSerializer, self).update(instance, validated_data)
 
         if password:
