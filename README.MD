@@ -28,3 +28,6 @@ Comando para executar os testes
 ```
 docker exec -it teste_python_backend_api python ./api/manage.py test
 ```
+
+<h4>Documentação das Apis</h4>
+https://documenter.getpostman.com/view/2835965/TzseK6q5
