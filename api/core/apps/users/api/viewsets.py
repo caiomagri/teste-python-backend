@@ -27,6 +27,10 @@ class UserViewSet(viewsets.ModelViewSet):
         return User.objects.filter(id=self.request.user.id)
 
     def update(self, request, *args, **kwargs):
+        if not request.data:
+            return Response({"erro": "Nenhuma informação enviada."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
         instance = self.get_object()
         password = request.data.get('password')
         old_password = request.data.get('old_password')
