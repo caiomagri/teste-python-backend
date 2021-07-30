@@ -20,7 +20,7 @@ services:
       - .:/code
     env_file: .env
     environment:
-      DEBUG: 'true'
+      DEBUG: ${DEBUG}
     command: python ./api/manage.py runserver 0.0.0.0:8000
     depends_on:
       - db

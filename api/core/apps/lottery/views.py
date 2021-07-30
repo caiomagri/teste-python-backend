@@ -18,7 +18,7 @@ class LotteryResultView(APIView):
             result = get_lottery_result()
             return Response({"result": result}, status=status.HTTP_200_OK)
         except Exception as ex:
-            logger.error(f"Get Resultado da Mega Sena - {str(ex)}")
+            logger.error(f"Get Lottery Result - {str(ex)}")
             return Response({"error": "Tivemos um problema para realizar a requisição."},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -37,11 +37,11 @@ class BetView(APIView):
             dozens = int(request.data.get("dozens"))
         except ValueError as ex:
             logger.error(f"POST Bet - {str(ex)}")
-            return Response({"erro": "O número de dezenas deve ser do tipo Inteiro."},
+            return Response({"error": "The number of dozen must be of type Integer."},
                             status=status.HTTP_400_BAD_REQUEST)
 
         if not (6 <= dozens <= 10):
-            return Response({"erro": "O número de dezenas deve ser no mínimo 6 e no máximo 10."},
+            return Response({"error": "The number of dozen must be a minimum of 6 and a maximum of 10."},
                             status=status.HTTP_400_BAD_REQUEST)
 
         numbers = sorted(list(random.sample(range(1, 61), dozens)))
@@ -67,7 +67,7 @@ class BetResultView(APIView):
             bet = request.user.bets.all().first()
 
             if not bet:
-                return Response({"erro": "Você ainda não fez nenhuma aposta."},
+                return Response({"error": "You haven't placed any bets yet."},
                                 status=status.HTTP_400_BAD_REQUEST)
 
             serializer = BetSerializer(bet)
@@ -87,6 +87,6 @@ class BetResultView(APIView):
 
             return Response(response)
         except Exception as ex:
-            logger.error(f"Get Resultado da Última Aposta - {str(ex)}")
-            return Response({"error": "Tivemos um problema para realizar a requisição."},
+            logger.error(f"Get Lottery las Result - {str(ex)}")
+            return Response({"error": "We had a problem making the request. Try again."},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -6,3 +6,4 @@ beautifulsoup4
 requests
 lxml
 Faker
+django-request-logging
