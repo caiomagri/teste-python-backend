@@ -1,12 +1,12 @@
 <h2><u>Teste Python Backend</u></h2>
 
-<small>
+<p>
 Você deverá construir uma API que faça jogos da mega sena, 
 o usuario deverá escolher a quantidade de dezenas por jogo e sua
 API irá gerar aleatoriamente dezenas para o usuário. 
 O usuário poderá consultar o resultado do ultimo jogo e comparar com suas dezenas 
 para conferir quantos numeros acertou.
-</small>
+</p>
 
 Compile a imagem Docker executando o comando abaixo no mesmo local onde os arquivos são encontrados ```Dockerfile``` e ``` docker-compose.yml```
 
