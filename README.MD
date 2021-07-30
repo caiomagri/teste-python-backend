@@ -8,6 +8,24 @@ O usuário poderá consultar o resultado do ultimo jogo e comparar com suas deze
 para conferir quantos numeros acertou.
 </p>
 
+<p>Settings básicos para api estão definidos por default no .env, que pode ser alterado..</p>
+
+```bash
+    SECRET_KEY=CBEDA7091AC0E9B90901C7AA2EEB5BCD0272167E96F792A36F457010759212C3
+
+    DEBUG=true
+    ENABLE_LOGGING=true
+    
+    # Data base settings
+    
+    DB_ENGINE=django.db.backends.postgresql_psycopg2
+    DB_NAME=lottery
+    DB_USER=postgres
+    DB_PASS=postgres
+    DB_SERVICE=db
+    DB_PORT=5432
+```
+
 Compile a imagem Docker executando o comando abaixo no mesmo local onde os arquivos são encontrados ```Dockerfile``` e ``` docker-compose.yml```
 
 ```
