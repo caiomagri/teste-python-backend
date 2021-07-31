@@ -28,7 +28,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         if not request.data:
-            return Response({"erro": "Nenhuma informação enviada."},
+            return Response({"error": "No body content."},
                             status=status.HTTP_400_BAD_REQUEST)
 
         instance = self.get_object()
@@ -37,10 +37,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if password:
             if not old_password:
-                return Response({"erro": "Para alterar sua senha informe sua senha atual."},
+                return Response({"error": "To change your password enter your old password."},
                                 status=status.HTTP_400_BAD_REQUEST)
             elif not instance.check_password(old_password):
-                return Response({"erro": "Sua senha atual não é válida."},
+                return Response({"error": "Your old password is not valid."},
                                 status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.serializer_class(instance, data=request.data, partial=True)
